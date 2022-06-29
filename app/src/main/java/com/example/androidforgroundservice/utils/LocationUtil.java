@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.androidforgroundservice.service.LocationService;
 
 import java.util.Objects;
@@ -31,7 +33,8 @@ public class LocationUtil {
         if(!isLocationServiceRunning(activity)){
             Intent intent = new Intent(activity.getApplicationContext(),LocationService.class);
             intent.setAction(Constraint.ACTION_START_LOCATION_SERVICE);
-            activity.startService(intent);
+          //  activity.startService(intent);
+            ContextCompat.startForegroundService(activity,intent);
             Toast.makeText(activity, "Location service started", Toast.LENGTH_SHORT).show();
         }
     }
@@ -40,7 +43,8 @@ public class LocationUtil {
         if(isLocationServiceRunning(activity)){
             Intent intent = new Intent(activity.getApplicationContext(),LocationService.class);
             intent.setAction(Constraint.ACTION_STOP_LOCATION_SERVICE);
-            activity.startService(intent);
+          //  activity.startService(intent);
+            ContextCompat.startForegroundService(activity,intent);
             Toast.makeText(activity, "Location service stopped", Toast.LENGTH_SHORT).show();
         }
     }

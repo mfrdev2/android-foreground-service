@@ -1,14 +1,20 @@
 package com.example.androidforgroundservice;
 
 import android.Manifest;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.example.androidforgroundservice.service.LocationService;
+import com.example.androidforgroundservice.utils.Constraint;
 import com.example.androidforgroundservice.utils.LocationUtil;
 
 import java.util.Map;
@@ -27,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void serviceStart(View view) {
-        String[] strings = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+        String[] strings = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
         mPermissionResult.launch(strings);
     }
 
@@ -43,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (grantedAllPermission) {
+            //           startOurService();
             LocationUtil.startLocationService(MainActivity.this);
         } else {
             LocationUtil.stopLocationService(MainActivity.this);
         }
     });
+
+    private void startOurService() {
+        Intent intent = new Intent(getApplicationContext(), LocationService.class);
+        ContextCompat.startForegroundService(getApplicationContext(), intent);
+    }
 }
